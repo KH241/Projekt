@@ -7,14 +7,27 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class TCPServer {
-    public static void main(String args[]) throws IOException, InterruptedException {
+    public static void main(String args[]) {
         int port = 3333;
-        ServerSocket server = new ServerSocket(port);
-        Socket socket = server.accept();
-        InputStream is = socket.getInputStream();
-        OutputStream os = socket.getOutputStream();
-        is.read();
-        os.write(":)".getBytes());
-        Thread.sleep(50000);
+        try{
+            //Server starten
+            ServerSocket server = new ServerSocket(port);
+            System.out.println("Server startet ... ");
+
+            //Auf Client warten
+            Socket socket = server.accept();
+            System.out.println("Waiting for Client ... ");
+
+            //Input lesen
+            InputStream is = socket.getInputStream();
+            byte[] test=new byte[1];
+            is.read(test);
+
+            //Zurück schicken
+            OutputStream os = socket.getOutputStream();
+            os.write(":)".getBytes());
+        }catch (Exception e){
+            System.out.println("sdjfkl");
+        }
     }
 }
