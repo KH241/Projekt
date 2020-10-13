@@ -15,6 +15,6 @@ public class TCPServer {
         OutputStream os = socket.getOutputStream();
         is.read();
         os.write(":)".getBytes());
-        Thread.sleep(5000);
+        Thread.sleep(50000);
     }
 }
