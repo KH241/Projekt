@@ -1,10 +1,11 @@
 package com.jetbrains;
 
 import java.io.FileReader;
+import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) {
-        System.out.println(TestClass.testFileManager());
+    public static void main(String[] args) throws IOException, InterruptedException {
+        Server.TCPServer.main(null);
     }
 }
