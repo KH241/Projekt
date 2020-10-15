@@ -7,27 +7,42 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class TCPServer {
-    public static void main(String args[]) {
-        int port = 3333;
-        try{
-            //Server starten
-            ServerSocket server = new ServerSocket(port);
-            System.out.println("Server startet ... ");
 
-            //Auf Client warten
-            Socket socket = server.accept();
-            System.out.println("Waiting for Client ... ");
+    private int port;
 
-            //Input lesen
-            InputStream is = socket.getInputStream();
-            byte[] test=new byte[1];
-            is.read(test);
+    public static void main(String[] args) throws IOException, InterruptedException {
 
-            //Zurück schicken
-            OutputStream os = socket.getOutputStream();
-            os.write(":)".getBytes());
-        }catch (Exception e){
-            System.out.println("sdjfkl");
-        }
+        TCPServer tcpServer = new TCPServer(3333);
+
+        tcpServer.dostuff();
+
     }
+
+    TCPServer(int port) {
+
+        this.port = port;
+
+    }
+
+    private void dostuff() throws IOException, InterruptedException {
+        ServerSocket server = new ServerSocket(this.port);
+        System.out.println("Server startet");
+
+        Socket socket = server.accept();
+        System.out.println("Waiting for Client");
+
+        socket.getInputStream().read();
+        System.out.println("Lese Dinge");
+
+        OutputStream os = socket.getOutputStream();
+        os.write(":) xD".getBytes());
+        os.close();
+        System.out.println("Sending out good vibes");
+
+        System.out.println("Mittagsschlaf");
+        Thread.sleep(5000);
+
+        System.out.println("Wieder wach");
+    }
+
 }
