@@ -1,53 +1,39 @@
 package Server;
 
-import java.io.BufferedReader;
+import com.jetbrains.FileManager;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.ServerSocket;
+import java.io.PrintStream;
 import java.net.Socket;
 
-public class TCPServer {
+public class TCPClient {
     private int port;
-    private ServerSocket server;
+    private String name;
     private Socket socket;
-    public static void main(String[] args) throws IOException, InterruptedException {
-        TCPServer tcpServer = new TCPServer(3333);
-        tcpServer.connection();
-        //tcpServer.receiveSensorData();
-        tcpServer.receiveFile();
-    }
 
-    TCPServer(int port) {
-        this.port = port;
+    public static void main(String[] args) throws IOException {
+        TCPClient tcpClient= new TCPClient("localhost",3333);
+        tcpClient.connection();
+        tcpClient.sendFile("test.txt");
+        //tcpClient.sendSensorData(1232123132, (float) 12.21123213,"Cooler sensor");
+        //tcpClient.receiveSensorData();
     }
-    private void connection() throws IOException, InterruptedException {
-        this.server = new ServerSocket(this.port);
-        this.socket = this.server.accept();
+    TCPClient(String name, int port){
+        this.name=name;
+        this.port=port;
     }
-    private void receiveFile() throws IOException {
-        InputStream is = this.socket.getInputStream();
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader br = new BufferedReader(isr);
-        OutputStream os=null;
-        String filename="server/";
-        filename+=br.readLine();
-        try {
-             os = new FileOutputStream(filename);
-        }catch (Exception e){
-            System.out.println("file will nich");
-        }
-        try{
-            while (true) {
-                os.write((br.readLine()+"\n").getBytes());
-            }
-        }catch (Exception e){
-            System.out.println("Shit");
-        }
+    private void connection() throws IOException {
+        this.socket= new Socket(this.name,this.port);
+    }
+    private void  sendFile(String filename) throws IOException {
+        OutputStream os = this.socket.getOutputStream();
+        PrintStream ps = new PrintStream(os);
+        ps.println(filename);
+        ps.println(FileManager.readFile(filename));
     }
     private void receiveSensorData() throws IOException {
         InputStream is = this.socket.getInputStream();
@@ -59,7 +45,6 @@ public class TCPServer {
             System.out.println("Got: "+readValue);
             String readName = dis.readUTF();
             System.out.println("Got: "+readName);
-            //sendSensorData(readTime,readValue,readName);
         }catch (Exception e){
             System.out.println("Problem receiving data");
         }
