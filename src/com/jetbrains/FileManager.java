@@ -1,34 +1,48 @@
 package com.jetbrains;
 
-import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 public class FileManager {
+
+    //Filereader aus Prog_1/ Patientlist9
     public static String readFile(String filename){
-        InputStream is=null;
+        String output = "";
+        File file = new File(filename);
+        FileReader filereader = null;
         try {
-            is=new FileInputStream(filename);
-        } catch (FileNotFoundException e) {
-            System.out.println("Couldn't open File");
-            System.out.println(e);
-            System.exit(0);
+            filereader = new FileReader(file);
+        } catch (Exception e) {
+            System.out.println("Datei nicht gefunden");
+            System.exit(1);
         }
-        byte[] readBuffer = new byte[100];
-        try{
-            is.read(readBuffer);
-        }catch (IOException e){
-            System.out.println("Couldn't read data");
-            System.exit(0);
+
+        BufferedReader reader = new BufferedReader(filereader);
+
+        try {
+            while (reader.ready()) {
+                output += reader.readLine() + "\n";
+            }
+        } catch (Exception e) {
+            System.out.println("Fehler beim Lesen der Datei");
+            e.printStackTrace();
         }
-        String readString = new String(readBuffer);
-        return readString;
+
+        try {
+            reader.close();
+        } catch (Exception e) {
+            System.out.println("Fehler beim Schließen der Datei");
+        }
+        return output;
     }
+
     public static void writeFile(String filename, String inhalt){
-        OutputStream os=null;
+        OutputStream os = null;
         try{
             os = new FileOutputStream(filename);
         } catch (FileNotFoundException e) {

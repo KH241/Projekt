@@ -15,17 +15,18 @@ public class TCPServer {
     private int port;
     private ServerSocket server;
     private Socket socket;
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException{
         TCPServer tcpServer = new TCPServer(3333);
         tcpServer.connection();
+
         //tcpServer.receiveSensorData();
-        tcpServer.receiveFile();
+        //tcpServer.receiveFile();
     }
 
     TCPServer(int port) {
         this.port = port;
     }
-    private void connection() throws IOException, InterruptedException {
+    private void connection() throws IOException{
         this.server = new ServerSocket(this.port);
         this.socket = this.server.accept();
     }
@@ -39,14 +40,14 @@ public class TCPServer {
         try {
              os = new FileOutputStream(filename);
         }catch (Exception e){
-            System.out.println("file will nich");
+            System.out.println("Problem opening File");
         }
         try{
             while (true) {
                 os.write((br.readLine()+"\n").getBytes());
             }
         }catch (Exception e){
-            System.out.println("Shit");
+            System.out.println("Problem reading File");
         }
     }
     private void receiveSensorData() throws IOException {

@@ -18,7 +18,8 @@ public class TCPClient {
     public static void main(String[] args) throws IOException {
         TCPClient tcpClient= new TCPClient("localhost",3333);
         tcpClient.connection();
-        tcpClient.sendFile("test.txt");
+
+        //tcpClient.sendFile("test.txt");
         //tcpClient.sendSensorData(1232123132, (float) 12.21123213,"Cooler sensor");
         //tcpClient.receiveSensorData();
     }
@@ -29,7 +30,7 @@ public class TCPClient {
     private void connection() throws IOException {
         this.socket= new Socket(this.name,this.port);
     }
-    private void  sendFile(String filename) throws IOException {
+    private void sendFile(String filename) throws IOException {
         OutputStream os = this.socket.getOutputStream();
         PrintStream ps = new PrintStream(os);
         ps.println(filename);
